@@ -1,0 +1,19 @@
+You can access a list of composers and works present on IMSLP using the following two URLs:
+
+List of people (composers, performers, editors, etc.): http://imslp.org/imslpscripts/API.ISCR.php?account=worklist/disclaimer=accepted/sort=id/type=1/start=0/retformat=<pretty|json|php|wddx>
+List of works: http://imslp.org/imslpscripts/API.ISCR.php?account=worklist/disclaimer=accepted/sort=id/type=2/start=0/retformat=<pretty|json|php|wddx>
+You can page through the list by changing the start value (this is the entry # that the results start from).
+
+There are currently 252,904 entries, ranging from index 0 to index 252,903.
+
+-----------------------------------------------------------------------------
+
+General score structure:
+Tabs are in div#wpscore_tabs
+--> Tabs themselves are in div.jq-ui-tabs
+--> Within each tab, h3 > span holds tab name
+--> h4 > span holds movement title
+--> h5 > span holds arrangement title
+--> div.we are the sections
+--> Each section has div.we_fileblock_9 with the actual links
+--> 
