@@ -22,5 +22,9 @@ async def uploadScores(supabase: AsyncClient, scores: List[ScoreProps]) -> None:
 
         except Exception as e:
             logger.error(f"Error inserting score {score.work_id}: {e}")
+
+            with open("errors.txt", "a") as f:
+                f.write(f"upload_scores.py - Error uploading score: {score.work_id}: {e}\n")
+
         finally:
             print(HORIZONTAL_BAR)

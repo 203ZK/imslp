@@ -27,6 +27,9 @@ async def processWorks(supabase: AsyncClient, works: List[Dict]) -> None:
         except Exception as e:
             logger.error(f"Error processing work: {e}")
 
+            with open("errors.txt", "a") as f:
+                f.write(f"client.py - Error processing work {id}: {e}\n")
+
 
 async def processPage(supabase: AsyncClient, page_num: int, page_size: int) -> None:
     start, end = getRowRange(page_num, page_size)
@@ -57,8 +60,8 @@ async def main():
     service_role_key: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
     supabase: AsyncClient = await acreate_client(url, service_role_key)
 
-    MAX_PAGE_COUNT = 2531
-    page_num = 130
+    MAX_PAGE_COUNT = 2531  # First one 147-500, 2nd 501-1000, 3rd 1001-1500, 4th 1501-2000, 5th 2001-2500, 6th 2501-2531
+    page_num = 1 # Skipped last few rows of page 1898
     page_size = 100
     
     while page_num <= MAX_PAGE_COUNT: # current last page is page 2531
