@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { fetchWorks } from '../api/api';
+import type { Work, WorksApiResponse } from '../types/api';
 
 interface SearchBarProps {
-  handleSearch: (results: any[]) => void,
+  handleSearch: (results: Work[]) => void,
 };
 
 const SearchBar = ({ handleSearch }: SearchBarProps) => {
@@ -15,11 +16,11 @@ const SearchBar = ({ handleSearch }: SearchBarProps) => {
     e.preventDefault();
 
     try {
-      const res = await fetchWorks(input);
-      handleSearch(res);
+      const works: WorksApiResponse = await fetchWorks(input);
+      handleSearch(works.data ?? []);
       setInput('');
     } catch (error) {
-      console.error("WTV");
+      console.error();
     }
   }
 
@@ -38,6 +39,7 @@ const SearchBar = ({ handleSearch }: SearchBarProps) => {
         label="Enter a search term..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        sx={{ width: 0.8 }}
       />
       <Button type="submit">Search</Button>
     </Box>
