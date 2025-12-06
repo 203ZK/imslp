@@ -2,45 +2,69 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { fetchWorks } from '../api/api';
-import type { Work, WorksApiResponse } from '../types/api';
+import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-interface SearchBarProps {
-  handleSearch: (results: Work[]) => void,
-};
+const SearchBar = () => {
+  const navigate = useNavigate();
 
-const SearchBar = ({ handleSearch }: SearchBarProps) => {
-  const [input, setInput] = useState('');
+  const [form, setForm] = useState({
+    "title": "",
+    "composer": ""
+  });
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const works: WorksApiResponse = await fetchWorks(input);
-      handleSearch(works.data ?? []);
-      setInput('');
-    } catch (error) {
-      console.error();
-    }
+    const searchParams = new URLSearchParams();
+
+    Object.entries(form).forEach(([key, value]) => {
+      if (value.trim() !== "") {
+        searchParams.set(key, value.trim());
+      }
+    });
+
+    navigate(`/search?${encodeURIComponent(searchParams.toString())}`);
   }
 
   return (
     <Box
       component="form"
-      sx={{ '& > :not(style)': { m: 1 } }}
+      sx={{ '& > :not(style)': { mt: 1 } }}
       noValidate
       autoComplete="off"
       display="flex"
       justifyContent="center"
       onSubmit={handleSubmit}
     >
-      <TextField
-        id="search-bar"
-        label="Enter a search term..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        sx={{ width: 0.8 }}
-      />
+      <Box flexGrow={1}>
+        <Typography mb={1}>Search by work title:</Typography>
+        <TextField
+          id="search-bar"
+          label="Enter a work title"
+          value={form.title}
+          name="title"
+          onChange={onChange}
+          sx={{ width: 0.9 }}
+        />
+      </Box>
+
+      <Box flexGrow={1}>
+        <Typography mb={1}>Search by composer name:</Typography>
+        <TextField
+          id="search-bar"
+          label="Enter a composer's name"
+          value={form.composer}
+          name="composer"
+          onChange={onChange}
+          sx={{ width: 0.9 }}
+        />
+      </Box>
+
       <Button type="submit">Search</Button>
     </Box>
   );

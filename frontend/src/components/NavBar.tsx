@@ -5,7 +5,7 @@ const NavBar = () => {
 
   return (
     <Box display="flex">
-      <AppBar component="nav">
+      <AppBar component="nav" position="static">
         <Toolbar sx={{ backgroundColor: "#1d4e8eff", justifyContent: "space-between" }}>
           <Typography variant="h6">IMSLP Clone</Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
