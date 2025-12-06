@@ -28,7 +28,7 @@ const SearchBar = () => {
       }
     });
 
-    navigate(`/search?${encodeURIComponent(searchParams.toString())}`);
+    navigate(`/search?${searchParams.toString()}`);
   }
 
   return (

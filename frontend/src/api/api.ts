@@ -4,8 +4,12 @@ import { supabase1, supabase2 } from "./supabase";
 
 const WORK_ID_CUTOFF = 140000;
 
-export async function fetchWorks(input: string): Promise<WorksApiResponse> {
-  const { data, error } = await supabase1.from("works").select().textSearch("work_title", input);
+export async function fetchWorks(title: string, composer: string): Promise<WorksApiResponse> {
+  const { data, error } = await supabase1
+    .from('works')
+    .select()
+    .textSearch('work_title', title, { type: 'websearch' })
+    .textSearch('composer', composer, { type: 'websearch' });
   
   if (error) {
     console.error(`Error fetching works from Supabase: ${error}`);

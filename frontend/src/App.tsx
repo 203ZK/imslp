@@ -1,8 +1,8 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
-import Work from './pages/Work';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import SearchResults from './pages/SearchResults';
 
 const theme = createTheme({
   typography: {
@@ -22,7 +22,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/work/:id" element={<Work />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
