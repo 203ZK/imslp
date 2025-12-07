@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
@@ -42,26 +41,24 @@ const SearchBar = () => {
       onSubmit={handleSubmit}
     >
       <Box flexGrow={1}>
-        <Typography mb={1}>Search by work title:</Typography>
         <TextField
           id="search-bar"
-          label="Enter a work title"
+          label="Search by work title..."
           value={form.title}
           name="title"
           onChange={onChange}
-          sx={{ width: 0.9 }}
+          sx={{ width: 0.95 }}
         />
       </Box>
 
       <Box flexGrow={1}>
-        <Typography mb={1}>Search by composer name:</Typography>
         <TextField
           id="search-bar"
-          label="Enter a composer's name"
+          label="Search by composer's name..."
           value={form.composer}
           name="composer"
           onChange={onChange}
-          sx={{ width: 0.9 }}
+          sx={{ width: 0.95 }}
         />
       </Box>
 

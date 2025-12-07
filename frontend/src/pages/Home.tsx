@@ -5,17 +5,27 @@ import Footer from "../components/Footer.js";
 
 const Home = () => {
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
-      <Box display="flex" sx={{ flexDirection: "column", flexGrow: 1, padding: "3rem", textAlign: "left" }}>
-        <Typography variant="h4" sx={{ mb: "1rem" }}>
+      <Box
+        display="flex" 
+        flexDirection="column" 
+        sx={{
+          justifyContent: "center",
+          flexGrow: 1,
+          padding: "3rem",
+          textAlign: "left",
+          transform: "translateY(-2rem)",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
           Search for any work on IMSLP
         </Typography>
-        <Typography variant="body1" sx={{ mb: "2rem" }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-          dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        <Typography variant="body1" gutterBottom>
+          IMSLP Clone lets you look up any work by any composer listed in the International Music Score Library Project (IMSLP) /
+          Petrucci Music Library database, <b>no matter the domain, and without the 15-second waiting time</b> for non-IMSLP members.
+          <br/><br/>
+          Search by the work's title and/or the composer's name to find scores!
         </Typography>
         <SearchBar />
       </Box>
