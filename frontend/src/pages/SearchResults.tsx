@@ -4,6 +4,7 @@ import type { Work, WorksApiResponse } from "../types/api";
 import { fetchWorks } from "../api/api";
 import { CircularProgress, Typography } from "@mui/material";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 const SearchResults = () => {
   const [params] = useSearchParams();
@@ -33,6 +34,7 @@ const SearchResults = () => {
       {results.map((work: Work, i: number) => {
         return <Typography key={i}>{work.work_title}</Typography>;
       })}
+      <Footer />
     </>
   );
 };
