@@ -23,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
+          {/* <Route path="/work/:workId" element={<WorkPage />} /> */}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

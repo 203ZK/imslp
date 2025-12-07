@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import type { Work, WorksApiResponse } from "../types/api";
 import { fetchWorks } from "../api/api";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Pagination, Stack, Typography } from "@mui/material";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import NoResults from "../components/NoResults";
+import WorkCard from "../components/WorkCard";
 
 const SearchResults = () => {
   const [params] = useSearchParams();
@@ -13,19 +14,35 @@ const SearchResults = () => {
   const composer = params.get("composer") ?? "";
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Pagination states
+  const MAX_PAGE_SIZE = 10;
+  const [maxPageCount, setMaxPageCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [results, setResults] = useState<Work[]>([]);
 
-  useEffect(() => {
-    async function loadWorks() {
-      const response: WorksApiResponse = await fetchWorks(title, composer);
-      console.log(response.data);
-      setResults(response.data ?? []);
-      setIsLoading(false);
+  const handleChange = (e: React.ChangeEvent<unknown>, value: number) => {
+    e.preventDefault();
+    setCurrentPage(value);
+  };
+
+  const loadWorks = async () => {
+    setIsLoading(true);
+
+    const response: WorksApiResponse = await fetchWorks(title, composer, currentPage, MAX_PAGE_SIZE);
+    console.log(response);
+    setResults(response.data ?? []);
+
+    if (response.count) {
+      setMaxPageCount(Math.floor(response.count / MAX_PAGE_SIZE) + 1);
     }
 
-    setIsLoading(true);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
     loadWorks();
-  }, [params]);
+  }, [params, currentPage]);
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
@@ -43,10 +60,17 @@ const SearchResults = () => {
           ? <CircularProgress /> 
           : results.length == 0 
           ? <NoResults />
-          : (results.map((work: Work, i: number) => {
-              return <Link color="inherit" to="" key={i}>{work.work_title} ({work.composer})</Link>;
-            })
-        )}
+          : (
+              <Box display="flex" flexDirection="column" rowGap={1}>
+                {results.map((work: Work, i: number) => {
+                  return <WorkCard work={work} key={i} />
+                })}
+                <Stack>
+                  <Pagination count={maxPageCount} page={currentPage} onChange={handleChange} />
+                </Stack>
+              </Box>
+            )
+        }
       </Box>
       <Footer />
     </Box>

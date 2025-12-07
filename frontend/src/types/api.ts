@@ -11,6 +11,7 @@ export interface Work {
 
 export interface WorksApiResponse {
   data: Work[] | null;
+  count: number | null;
   error: PostgrestError | null;
 }
 
