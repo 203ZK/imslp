@@ -1,10 +1,11 @@
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SearchBar = () => {
+export const SearchBar = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -67,4 +68,19 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export const SearchBarAlternative = () => {
+  return (
+    <Box
+      sx={{
+        padding: "1rem",
+        border: 2,
+        borderColor: "#3156a5ff",
+        borderRadius: "12px",
+        marginBottom: "1rem",
+      }}
+    >
+      <Typography variant="body1" gutterBottom>Search for more works:</Typography>
+      <SearchBar />
+    </Box>
+  );
+};

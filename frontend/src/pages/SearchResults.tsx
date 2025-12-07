@@ -7,6 +7,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import NoResults from "../components/NoResults";
 import WorkCard from "../components/WorkCard";
+import { SearchBarAlternative } from "../components/SearchBar";
 
 const SearchResults = () => {
   const [params] = useSearchParams();
@@ -17,7 +18,7 @@ const SearchResults = () => {
 
   // Pagination states
   const MAX_PAGE_SIZE = 10;
-  const [maxPageCount, setMaxPageCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [results, setResults] = useState<Work[]>([]);
 
@@ -32,10 +33,7 @@ const SearchResults = () => {
     const response: WorksApiResponse = await fetchWorks(title, composer, currentPage, MAX_PAGE_SIZE);
     console.log(response);
     setResults(response.data ?? []);
-
-    if (response.count) {
-      setMaxPageCount(Math.floor(response.count / MAX_PAGE_SIZE) + 1);
-    }
+    setCount(response.count ?? 0);
 
     setIsLoading(false);
   }
@@ -52,25 +50,40 @@ const SearchResults = () => {
         flexDirection="column"
         sx={{ flexGrow: 1, padding: "3rem", textAlign: "left" }}
       >
-        <Typography variant="h4" gutterBottom>
-          Search Results for "{title}" by "{composer}"
-        </Typography>
-        <Divider sx={{ mb: "2rem" }} />
-        {isLoading 
-          ? <CircularProgress /> 
-          : results.length == 0 
-          ? <NoResults />
-          : (
-              <Box display="flex" flexDirection="column" rowGap={1}>
-                {results.map((work: Work, i: number) => {
-                  return <WorkCard work={work} key={i} />
-                })}
-                <Stack>
-                  <Pagination count={maxPageCount} page={currentPage} onChange={handleChange} />
-                </Stack>
-              </Box>
-            )
-        }
+        <SearchBarAlternative />
+
+        <Box sx={{ padding: "1rem" }}>
+          <Typography variant="h6" gutterBottom>
+            {title !== "" && composer !== ""
+              ? `Search results for "${title}" by "${composer}" (${count} matches)`
+              : title !== ""
+                ? `Search results for "${title}" (${count} matches)`
+                : `Search results for works by "${composer}" (${count} matches)`
+            }
+          </Typography>
+
+          <Divider sx={{ mb: "2rem" }} />
+
+          {isLoading
+            ? <CircularProgress />
+            : results.length == 0
+              ? <NoResults />
+              : (
+                <Box display="flex" flexDirection="column" rowGap={1}>
+                  {results.map((work: Work, i: number) => {
+                    return <WorkCard work={work} key={i} />
+                  })}
+                  <Stack>
+                    <Pagination
+                      count={Math.floor(count / MAX_PAGE_SIZE) + 1}
+                      page={currentPage}
+                      onChange={handleChange}
+                    />
+                  </Stack>
+                </Box>
+              )
+          }
+        </Box>
       </Box>
       <Footer />
     </Box>

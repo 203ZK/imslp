@@ -1,7 +1,7 @@
-import SearchBar from "../components/SearchBar.js";
 import NavBar from "../components/NavBar.js";
 import { Box, Typography } from "@mui/material";
 import Footer from "../components/Footer.js";
+import { SearchBar } from "../components/SearchBar.js";
 
 const Home = () => {
   return (

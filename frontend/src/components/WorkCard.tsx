@@ -8,8 +8,8 @@ interface WorkCardProps {
 const WorkCard = ({ work }: WorkCardProps) => {
   return (
     <Card>
-      <Typography variant="h6" fontWeight="bold">{work.work_title}</Typography>
-      <Typography variant="body1">Composer: {work.composer}</Typography>
+      <Typography variant="body1" fontWeight="bold">{work.work_title}</Typography>
+      <Typography variant="body2">Composer: {work.composer}</Typography>
       <Button>View scores</Button>
     </Card>
   );
