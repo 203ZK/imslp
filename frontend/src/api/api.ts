@@ -1,4 +1,4 @@
-import type { WorksApiResponse } from "../types/api";
+import type { FileInfo, Score, ScoreApiResponse, ScoresSupabaseResponse, WorksSupabaseResponse } from "../types/api";
 import { fetchApi } from "./client";
 import { supabase1, supabase2 } from "./supabase";
 
@@ -6,11 +6,9 @@ const WORK_ID_CUTOFF = 140000;
 
 export async function fetchWorks(
   title: string, composerName: string, pageNum: number, pageSize: number
-): Promise<WorksApiResponse> {
+): Promise<WorksSupabaseResponse> {
   const from: number = (pageNum - 1) * pageSize;
   const to: number = from + pageSize - 1;
-
-  console.log(`From: ${from}, to: ${to}`);
 
   const { data, count, error } = await supabase1
     .rpc('search_works', { title: title, composer_name: composerName }, { count: 'exact' })
@@ -25,11 +23,37 @@ export async function fetchWorks(
   return { data: data, count: count, error: null };
 };
 
-export async function fetchScores(workId: number) {
+export async function fetchScores(workId: number): Promise<ScoresSupabaseResponse> {
   const supabase = workId < WORK_ID_CUTOFF ? supabase1 : supabase2;
-  const scores = await supabase.from("scores").select().eq("work_id", workId);
-  return scores;
+
+  const { data, error }: ScoresSupabaseResponse = await supabase
+    .from("scores")
+    .select()
+    .eq("work_id", workId);
+
+  if (error) {
+    console.error(`Error fetching scores from Supabase: ${error}`);
+    return { data: [], error: error };
+  }
+
+  return { data: data, error: null };
 };
+
+export function processScoresResponse(scores: ScoreApiResponse[]): Score[] {
+  const extractDetails = (score: ScoreApiResponse): Score => {
+    if (score.file_info) { 
+      const fileInfo: FileInfo = JSON.parse(score.file_info);
+      return {
+        imslp_key: fileInfo.imslp_key ?? 0,
+        link: fileInfo.file_link ?? "",
+      }
+    } else {
+      return { imslp_key: null, link: null };
+    }
+  }; 
+
+  return scores.map(score => extractDetails(score));
+}
 
 export async function fetchMirroredLink(imslpKey: string, link: string) {
   const encodedLink = link.slice(8, 13)+ imslpKey + "-" + link.slice(13);

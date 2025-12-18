@@ -5,6 +5,14 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const searchBarAlternativeStyles = {
+  padding: "1rem",
+  border: 2,
+  borderColor: "#3156a5ff",
+  borderRadius: "12px",
+  marginBottom: "1rem",
+};
+
 export const SearchBar = () => {
   const navigate = useNavigate();
 
@@ -70,15 +78,7 @@ export const SearchBar = () => {
 
 export const SearchBarAlternative = () => {
   return (
-    <Box
-      sx={{
-        padding: "1rem",
-        border: 2,
-        borderColor: "#3156a5ff",
-        borderRadius: "12px",
-        marginBottom: "1rem",
-      }}
-    >
+    <Box sx={searchBarAlternativeStyles}>
       <Typography variant="body1" gutterBottom>Search for more works:</Typography>
       <SearchBar />
     </Box>

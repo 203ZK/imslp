@@ -3,21 +3,19 @@ import { Box, Typography } from "@mui/material";
 import Footer from "../components/Footer.js";
 import { SearchBar } from "../components/SearchBar.js";
 
+const boxStyles = {
+  justifyContent: "center",
+  flexGrow: 1,
+  padding: "3rem",
+  textAlign: "left",
+  transform: "translateY(-2rem)",
+};
+
 const Home = () => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
-      <Box
-        display="flex" 
-        flexDirection="column" 
-        sx={{
-          justifyContent: "center",
-          flexGrow: 1,
-          padding: "3rem",
-          textAlign: "left",
-          transform: "translateY(-2rem)",
-        }}
-      >
+      <Box display="flex" flexDirection="column" sx={boxStyles}>
         <Typography variant="h4" gutterBottom>
           Search for any work on IMSLP
         </Typography>

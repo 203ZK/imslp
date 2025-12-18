@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { Work, WorksApiResponse } from "../types/api";
+import type { Work, WorksSupabaseResponse } from "../types/api";
 import { fetchWorks } from "../api/api";
 import { Box, CircularProgress, Divider, Pagination, Stack, Typography } from "@mui/material";
 import NavBar from "../components/NavBar";
@@ -30,8 +30,7 @@ const SearchResults = () => {
   const loadWorks = async () => {
     setIsLoading(true);
 
-    const response: WorksApiResponse = await fetchWorks(title, composer, currentPage, MAX_PAGE_SIZE);
-    console.log(response);
+    const response: WorksSupabaseResponse = await fetchWorks(title, composer, currentPage, MAX_PAGE_SIZE);
     setResults(response.data ?? []);
     setCount(response.count ?? 0);
 

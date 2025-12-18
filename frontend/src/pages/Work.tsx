@@ -1,28 +1,25 @@
-import { Button, CircularProgress, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Button, CircularProgress, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchScores } from "../api/api";
-import type { Score } from "../types/api";
+import { fetchScores, processScoresResponse } from "../api/api";
+import type { Score, ScoresSupabaseResponse } from "../types/api";
 
 const Work = () => {
-  const { id } = useParams();
+  const { workId } = useParams();
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [scores, setScores] = useState<any>([]);
+  const [scores, setScores] = useState<Score[]>([]);
 
-  const loadScores = async () => {
+  const loadScores = async (workId: number) => {
     setIsLoading(true);
 
-    try {
-      const res = await fetchScores(Number(id) ?? 0);
-      if (res) {
-        setScores(res);
-      }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
+    const response: ScoresSupabaseResponse = await fetchScores(workId);
+    const scores: Score[] = processScoresResponse(response.data ?? []);
+    setScores(scores);
+
+    console.log(scores);
+
+    setIsLoading(false);
   };
 
   // const handleDownload = async (imslpKey: string, link: string) => {
@@ -37,8 +34,8 @@ const Work = () => {
   // };
 
   useEffect(() => {
-    loadScores();
-  }, [id]);
+    workId && loadScores(Number(workId));
+  }, [workId]);
 
   return isLoading 
     ? <CircularProgress /> 
@@ -51,7 +48,7 @@ const Work = () => {
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>
                   <Button onClick={() => {}} key={i}>
-                    {score.link}
+                    <Typography>{score.link}</Typography>
                   </Button>
                 </TableCell>
               </TableRow>
