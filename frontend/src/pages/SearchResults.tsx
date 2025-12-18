@@ -42,6 +42,18 @@ const SearchResults = () => {
     loadWorks();
   }, [params, currentPage]);
 
+  const baseText = title !== "" && composer !== ""
+                   ? `Search results for "${title}" by "${composer}"`
+                   : title !== ""
+                   ? `Search results for "${title}"`
+                   : `Search results for works by "${composer}"`;
+  const numOfMatchesText = count === 0 
+                         ? ""
+                         : count === 1
+                         ? ` (${count} match)`
+                         : ` (${count} matches)`;
+  const matchesText = baseText + numOfMatchesText;
+
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
@@ -53,16 +65,9 @@ const SearchResults = () => {
         <SearchBarAlternative />
 
         <Box sx={{ padding: "1rem" }}>
-          <Typography variant="h6" gutterBottom>
-            {title !== "" && composer !== ""
-              ? `Search results for "${title}" by "${composer}" (${count} matches)`
-              : title !== ""
-                ? `Search results for "${title}" (${count} matches)`
-                : `Search results for works by "${composer}" (${count} matches)`
-            }
-          </Typography>
+          <Typography variant="h6" gutterBottom>{matchesText}</Typography>
 
-          <Divider sx={{ mb: "2rem" }} />
+          <Divider sx={{ mb: "1rem" }} />
 
           {isLoading
             ? <CircularProgress />

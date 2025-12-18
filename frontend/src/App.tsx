@@ -13,7 +13,7 @@ const theme = createTheme({
       'Arial',
       'sans-serif'
     ].join(','),
-  }
+  },
 });
 
 function App() {

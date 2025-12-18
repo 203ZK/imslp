@@ -1,4 +1,4 @@
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import type { Work } from "../types/api";
 
 interface WorkCardProps {
@@ -7,10 +7,35 @@ interface WorkCardProps {
 
 const WorkCard = ({ work }: WorkCardProps) => {
   return (
-    <Card>
-      <Typography variant="body1" fontWeight="bold">{work.work_title}</Typography>
-      <Typography variant="body2">Composer: {work.composer}</Typography>
-      <Button>View scores</Button>
+    <Card variant="outlined">
+      <CardContent
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '16px',
+          "&:last-child": {
+            paddingBottom: '16px',
+          }}}
+      >
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          flexGrow={0.95}
+        >
+          {work.work_title} ({work.composer})
+        </Typography>
+
+        <Button
+          sx={{
+            backgroundColor: '#0e58b3ff',
+            color: 'white',
+            flexGrow: 0.05,
+            textTransform: 'none'
+          }}
+        >
+          View scores
+        </Button>
+      </CardContent>
     </Card>
   );
 };
