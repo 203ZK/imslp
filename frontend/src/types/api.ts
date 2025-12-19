@@ -15,11 +15,6 @@ export interface WorksSupabaseResponse {
   error: PostgrestError | null;
 }
 
-export interface Score {
-  imslp_key: number | null;
-  link: string | null;
-}
-
 export interface FileInfo {
   imslp_key?: number;
   file_title?: string;
@@ -30,19 +25,35 @@ export interface FileInfo {
   uploader?: string;
 }
 
+export interface WorksJoinApiResponse {
+  work_title: string;
+  composer: string;
+}
+
 export interface ScoreApiResponse {
   id: number;
   work_id: number;
   movement_title: string;
   arrangement_title: string;
   file_info: string;
-  source_info: Record<string, any>;
+  source_info: string;
   category: string;
+  works: WorksJoinApiResponse;
 }
 
 export interface ScoresSupabaseResponse {
   data: ScoreApiResponse[] | null;
   error: PostgrestError | null;
+}
+
+export interface Score {
+  id?: number;
+  work_id?: number;
+  movement_title?: string;
+  arrangement_title?: string;
+  file_info?: FileInfo;
+  source_info?: Record<string, any>;
+  category?: string;
 }
 
 export interface MirroredLinkApiResponse {

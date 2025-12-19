@@ -28,7 +28,7 @@ export async function fetchScores(workId: number): Promise<ScoresSupabaseRespons
 
   const { data, error }: ScoresSupabaseResponse = await supabase
     .from("scores")
-    .select()
+    .select(`*, works ( work_title, composer )`)
     .eq("work_id", workId);
 
   if (error) {
@@ -41,15 +41,25 @@ export async function fetchScores(workId: number): Promise<ScoresSupabaseRespons
 
 export function processScoresResponse(scores: ScoreApiResponse[]): Score[] {
   const extractDetails = (score: ScoreApiResponse): Score => {
-    if (score.file_info) { 
-      const fileInfo: FileInfo = JSON.parse(score.file_info);
-      return {
-        imslp_key: fileInfo.imslp_key ?? 0,
-        link: fileInfo.file_link ?? "",
+    let fileInfo: FileInfo | undefined;
+    let sourceInfo: Record<string, any> = {};
+
+    if (score.file_info) {
+      try {
+        fileInfo = JSON.parse(score.file_info); 
+      } catch (error) {
+        console.error(`Error parsing file info: ${error}`);
       }
-    } else {
-      return { imslp_key: null, link: null };
     }
+    if (score.source_info) {
+      try {
+        sourceInfo = JSON.parse(score.source_info);
+      } catch (error) {
+        console.error(`Error parsing source info: ${error}`);
+      }
+    }
+
+    return { ...score, file_info: fileInfo, source_info: sourceInfo };
   }; 
 
   return scores.map(score => extractDetails(score));
