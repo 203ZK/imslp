@@ -1,5 +1,4 @@
 import { scrapeWorkForScores } from "../api/scraper.js";
-import supabase from "../api/supabase.js";
 
 async function getLinkByWorkId(workId) {
     const { data } = await supabase
