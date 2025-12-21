@@ -26,7 +26,20 @@ const WorkCard = ({ work }: WorkCardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/work/${work.id}`);
+    const rawParams = {
+      id: String(work.id),
+      title: work.work_title,
+    };
+
+    const searchParams = new URLSearchParams();
+
+    Object.entries(rawParams).forEach(([key, value]) => {
+      if (value.trim() !== "") {
+        searchParams.set(key, value.trim());
+      }
+    });
+
+    navigate(`/work?${searchParams.toString()}`);
   };
 
   return (

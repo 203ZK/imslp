@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
-          <Route path="/work/:workId" element={<Work />} />
+          <Route path="/work" element={<Work />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

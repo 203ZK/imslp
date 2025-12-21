@@ -1,49 +1,93 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Collapse, Typography } from "@mui/material";
 import type { FileInfo, Score } from "../types/api";
+import { useState } from "react";
 
 interface ScoreCardProps {
   score: Score;
 }
 
-const cardContentStyle = {
+const cardContentStyles = {
   padding: '16px',
   "&:last-child": {
     paddingBottom: '16px',
   }
 };
 
-const buttonStyle = {
+const boxStyles = {
+  display: 'flex',
+};
+
+const titleStyles = {
+  fontWeight: 'bold',
+  flexGrow: 0.95,
+  lineHeight: '2rem',
+};
+
+const buttonStyles = {
   backgroundColor: '#0e58b3ff',
   color: 'white',
   flexGrow: 0.05,
-  textTransform: 'none'
+  textTransform: 'none',
+};
+
+const fieldStyles = {
+  lineHeight: '1.4rem',
+};
+
+const detailsStyles = {
+  lineHeight: '1.8rem',
+  cursor: 'pointer',
+  color: 'primary.main',
+  width: 'fit-content',
+  "&:hover": {
+    textDecoration: 'underline',
+  },
 };
 
 const ScoreCard = ({ score }: ScoreCardProps) => {
   const file_info: FileInfo | undefined = score.file_info;
   const source_info: Record<string, any> = score.source_info ?? {};
 
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+
   return (
-    <Card variant="outlined">
-      <CardContent sx={cardContentStyle}>
-        <Typography variant="body1" fontWeight="bold" flexGrow={0.95}>
-          {`${file_info?.file_title} (#${file_info?.imslp_key})`}
+    <Card variant="outlined" sx={{ mb: 1 }}>
+      <CardContent sx={cardContentStyles}>
+
+        <Box sx={boxStyles}>
+          <Typography variant="body1" sx={titleStyles}>
+            {`${file_info?.file_title} (#${file_info?.imslp_key})`}
+          </Typography>
+          <Button sx={buttonStyles}>Open file</Button>
+        </Box>
+
+        <Typography variant="body2" sx={fieldStyles}>
+          <b>File size</b>{`: ${file_info?.file_size}`}
         </Typography>
-        <Typography variant="body2">
-          {`File size: ${file_info?.file_size}`}
+
+        <Typography variant="body2" sx={fieldStyles}>
+          <b>Uploaded by</b>{`: ${file_info?.uploader}`}
         </Typography>
-        <Typography variant="body2">
-          {`Uploaded by: ${file_info?.uploader}`}
+
+        <Collapse in={showDetails}>
+          {Object.keys(source_info).map(key => {
+            const value = source_info[key];
+            return (
+              <Typography variant="body2" sx={fieldStyles}>
+                <b>{`${key}`}</b>{`: ${value}`}
+              </Typography>
+            );
+          })}
+        </Collapse>
+
+        <Typography
+          variant="body2"
+          sx={detailsStyles}
+          onClick={() => setShowDetails((v) => !v)}
+        >
+          {showDetails ? "Hide details" : "Show details"}
         </Typography>
-        {Object.keys(source_info).map(key => {
-          const value = source_info[key];
-          return (
-            <Typography variant="body2">
-              {`${key}: ${value}`}
-            </Typography>
-          );
-        })}
-        <Button sx={buttonStyle}>Open file</Button>
+
       </CardContent>
     </Card>
   );

@@ -9,6 +9,12 @@ import NoResults from "../components/NoResults";
 import WorkCard from "../components/WorkCard";
 import { SearchBarAlternative } from "../components/SearchBar";
 
+const boxStyles = {
+  flexGrow: 1,
+  padding: '3rem',
+  textAlign: 'left',
+};
+
 const SearchResults = () => {
   const [params] = useSearchParams();
   const title = params.get("title") ?? "";
@@ -56,36 +62,30 @@ const SearchResults = () => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
-      <Box
-        display="flex"
-        flexDirection="column"
-        sx={{ flexGrow: 1, padding: "3rem", textAlign: "left" }}
-      >
+      <Box display="flex" flexDirection="column" sx={boxStyles}>
         <SearchBarAlternative />
 
         <Box sx={{ padding: "1rem" }}>
           <Typography variant="h6" gutterBottom>{matchesText}</Typography>
-
           <Divider sx={{ mb: "1rem" }} />
-
           {isLoading
             ? <CircularProgress />
             : results.length == 0
               ? <NoResults />
               : (
-                <Box display="flex" flexDirection="column" rowGap={1}>
-                  {results.map((work: Work, i: number) => {
-                    return <WorkCard work={work} key={i} />
-                  })}
-                  <Stack>
-                    <Pagination
-                      count={Math.floor(count / MAX_PAGE_SIZE) + 1}
-                      page={currentPage}
-                      onChange={handleChange}
-                    />
-                  </Stack>
-                </Box>
-              )
+                  <Box display="flex" flexDirection="column" rowGap={1}>
+                    {results.map((work: Work, i: number) => {
+                      return <WorkCard work={work} key={i} />
+                    })}
+                    <Stack>
+                      <Pagination
+                        count={Math.floor(count / MAX_PAGE_SIZE) + 1}
+                        page={currentPage}
+                        onChange={handleChange}
+                      />
+                    </Stack>
+                  </Box>
+                )
           }
         </Box>
       </Box>
