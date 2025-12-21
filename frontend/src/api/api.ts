@@ -73,17 +73,26 @@ export function processScoresResponse(scores: ScoreApiResponse[]): Score[] {
 }
 
 export async function fetchMirroredLink(imslpKey: string, link: string): Promise<MirroredLinkApiResponse> {
-  const encodedLink = link.slice(8, 13) + "IMSLP" + imslpKey + "-" + link.slice(13);
+  const encodedLink1 = link.slice(8, 13) + "IMSLP" + imslpKey + "-" + link.slice(13);
+  const encodedLink2 = link.slice(8, 13) + "IMSLP0" + imslpKey + "-" + link.slice(13);
 
   const path = "http://localhost:3000/score";
 
-  const mirroredLink: MirroredLinkApiResponse = await fetchApi(path, {
+  const mirroredLink1: MirroredLinkApiResponse = await fetchApi(path, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ encodedLink: encodedLink }),
+    body: JSON.stringify({ encodedLink: encodedLink1 }),
   });
 
-  return mirroredLink;
+  const mirroredLink2: MirroredLinkApiResponse = await fetchApi(path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ encodedLink: encodedLink2 }),
+  });
+
+  return mirroredLink1.link ? mirroredLink1 : mirroredLink2; // hacky way
 }; 

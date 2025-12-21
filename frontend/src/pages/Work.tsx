@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   CircularProgress,
   Divider,
@@ -27,7 +28,6 @@ const Work = () => {
   const workTitle = params.get("title") ?? "";
   
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [scores, setScores] = useState<Score[]>([]);
 
   const loadScores = async (workId: number) => {
@@ -40,15 +40,20 @@ const Work = () => {
     setIsLoading(false);
   };
 
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [hasSuccessfullyFetched, setHasSuccessfullyFetched] = useState<boolean>(false);
+  const [hasErrorFetching, setHasErrorFetching] = useState<boolean>(false);
+
   const handleOpen = async (imslpKey: string, link: string) => {
     setIsFetching(true);
 
     try {
       const res = await fetchMirroredLink(imslpKey, link);
       if (res.link) {
+        setHasSuccessfullyFetched(true);
         window.open(res.link, "_blank");
       } else {
-        setIsFetching(false);
+        setHasErrorFetching(true);
       }
     } catch (e) {
       console.log(e);
@@ -57,15 +62,14 @@ const Work = () => {
     }
   };
 
-  const handleClose = (
+  const handleClose = (close: any) => (
     _event: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,
   ) => {
     if (reason === 'clickaway') {
       return;
     }
-
-    setIsFetching(false);
+    close(false);
   };
 
   useEffect(() => {
@@ -97,10 +101,39 @@ const Work = () => {
 
       <Snackbar
         open={isFetching}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Fetching from mirrors..."
+        message={"Fetching from mirrors..."}
       />
+
+      <Snackbar
+        open={hasSuccessfullyFetched}
+        autoHideDuration={6000}
+        onClose={handleClose(setHasSuccessfullyFetched)}
+      >
+        <Alert
+          onClose={handleClose(setHasSuccessfullyFetched)}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Successfully fetched score!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={hasErrorFetching}
+        autoHideDuration={6000}
+        onClose={handleClose(setHasErrorFetching)}
+      >
+        <Alert
+          onClose={handleClose(setHasErrorFetching)}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Error fetching score, please try again.
+        </Alert>
+      </Snackbar>
+
     </Box>
   );
 };
