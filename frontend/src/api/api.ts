@@ -1,4 +1,11 @@
-import type { FileInfo, Score, ScoreApiResponse, ScoresSupabaseResponse, WorksSupabaseResponse } from "../types/api";
+import type {
+  FileInfo,
+  MirroredLinkApiResponse,
+  Score,
+  ScoreApiResponse,
+  ScoresSupabaseResponse,
+  WorksSupabaseResponse
+} from "../types/api";
 import { fetchApi } from "./client";
 import { supabase1, supabase2 } from "./supabase";
 
@@ -65,17 +72,18 @@ export function processScoresResponse(scores: ScoreApiResponse[]): Score[] {
   return scores.map(score => extractDetails(score));
 }
 
-export async function fetchMirroredLink(imslpKey: string, link: string) {
-  const encodedLink = link.slice(8, 13)+ imslpKey + "-" + link.slice(13);
-  const path = "";
+export async function fetchMirroredLink(imslpKey: string, link: string): Promise<MirroredLinkApiResponse> {
+  const encodedLink = link.slice(8, 13) + "IMSLP" + imslpKey + "-" + link.slice(13);
 
-  const mirroredLink = await fetchApi(path, {
+  const path = "http://localhost:3000/score";
+
+  const mirroredLink: MirroredLinkApiResponse = await fetchApi(path, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ encodedLink: encodedLink }),
   });
-  
+
   return mirroredLink;
-};
+}; 

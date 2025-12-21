@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface ScoreCardProps {
   score: Score;
+  handleClick: (imslpKey: string, link: string) => Promise<void>;
 }
 
 const cardContentStyles = {
@@ -44,11 +45,13 @@ const detailsStyles = {
   },
 };
 
-const ScoreCard = ({ score }: ScoreCardProps) => {
+const ScoreCard = ({ score, handleClick }: ScoreCardProps) => {
   const file_info: FileInfo | undefined = score.file_info;
   const source_info: Record<string, any> = score.source_info ?? {};
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
+
+  const onClick = () => handleClick(String(file_info?.imslp_key), String(file_info?.file_link));
 
   return (
     <Card variant="outlined" sx={{ mb: 1 }}>
@@ -58,7 +61,8 @@ const ScoreCard = ({ score }: ScoreCardProps) => {
           <Typography variant="body1" sx={titleStyles}>
             {`${file_info?.file_title} (#${file_info?.imslp_key})`}
           </Typography>
-          <Button sx={buttonStyles}>Open file</Button>
+          
+          <Button onClick={onClick} sx={buttonStyles}>Open file</Button>
         </Box>
 
         <Typography variant="body2" sx={fieldStyles}>
