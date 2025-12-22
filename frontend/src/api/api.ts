@@ -1,8 +1,5 @@
 import type {
-  FileInfo,
   MirroredLinkApiResponse,
-  Score,
-  ScoreApiResponse,
   ScoresSupabaseResponse,
   WorksSupabaseResponse
 } from "../types/api";
@@ -45,32 +42,6 @@ export async function fetchScores(workId: number): Promise<ScoresSupabaseRespons
 
   return { data: data, error: null };
 };
-
-export function processScoresResponse(scores: ScoreApiResponse[]): Score[] {
-  const extractDetails = (score: ScoreApiResponse): Score => {
-    let fileInfo: FileInfo | undefined;
-    let sourceInfo: Record<string, any> = {};
-
-    if (score.file_info) {
-      try {
-        fileInfo = JSON.parse(score.file_info); 
-      } catch (error) {
-        console.error(`Error parsing file info: ${error}`);
-      }
-    }
-    if (score.source_info) {
-      try {
-        sourceInfo = JSON.parse(score.source_info);
-      } catch (error) {
-        console.error(`Error parsing source info: ${error}`);
-      }
-    }
-
-    return { ...score, file_info: fileInfo, source_info: sourceInfo };
-  }; 
-
-  return scores.map(score => extractDetails(score));
-}
 
 export async function fetchMirroredLink(imslpKey: string, link: string): Promise<MirroredLinkApiResponse> {
   const encodedLink1 = link.slice(8, 13) + "IMSLP" + imslpKey + "-" + link.slice(13);
