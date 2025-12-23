@@ -1,10 +1,10 @@
 import type { FileInfo, Score, ScoreApiResponse } from "../types/api";
 
-interface Arrangements {
+export interface Arrangements {
   [arrangementTitle: string]: Score[];
 }
 
-interface Movements {
+export interface Movements {
   [movementTitle: string]: Arrangements;
 }
 
@@ -20,16 +20,16 @@ function extractDetails(score: ScoreApiResponse): Score {
     try {
       fileInfo = JSON.parse(score.file_info);
     } catch (error) {
-      console.log("File info:", score.file_info);
-      console.error(`Error parsing file info: ${error}`);
+      // console.log("File info:", score.file_info);
+      // console.error(`Error parsing file info: ${error}`);
     }
   }
   if (score.source_info) {
     try {
       sourceInfo = JSON.parse(score.source_info);
     } catch (error) {
-      console.log("Source info:", score.source_info);
-      console.error(`Error parsing source info: ${error}`);
+      // console.log("Source info:", score.source_info);
+      // console.error(`Error parsing source info: ${error}`);
     }
   }
 

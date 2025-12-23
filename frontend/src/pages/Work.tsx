@@ -7,16 +7,15 @@ import {
   Typography,
   type SnackbarCloseReason
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchMirroredLink, fetchScores } from "../api/api";
+import { processScoresResponse, type Categories } from "../api/utils";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
-import ScoreCard from "../components/ScoreCard";
-import { SearchBarAlternative } from "../components/SearchBar";
-import type { Score, ScoresSupabaseResponse } from "../types/api";
-import { processScoresResponse, type Categories } from "../api/utils";
 import ScoreTabs from "../components/ScoreTabs";
+import { SearchBarAlternative } from "../components/SearchBar";
+import type { ScoresSupabaseResponse } from "../types/api";
 
 const boxStyles = {
   flexGrow: 1,
@@ -28,23 +27,23 @@ const Work = () => {
   const [params] = useSearchParams();
   const workId = params.get("id");
   const workTitle = params.get("title") ?? "";
-  
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [scores, setScores] = useState<Categories>({});
-
-  const loadScores = async (workId: number) => {
-    setIsLoading(true);
-
-    const response: ScoresSupabaseResponse = await fetchScores(workId);
-    const scores = processScoresResponse(response.data ?? []);
-    setScores(scores);
-
-    setIsLoading(false);
-  };
 
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [hasSuccessfullyFetched, setHasSuccessfullyFetched] = useState<boolean>(false);
   const [hasErrorFetching, setHasErrorFetching] = useState<boolean>(false);
+
+  const handleClose = (close: any) => (
+    _event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    close(false);
+  };
 
   const handleOpen = async (imslpKey: string, link: string) => {
     setIsFetching(true);
@@ -64,14 +63,15 @@ const Work = () => {
     }
   };
 
-  const handleClose = (close: any) => (
-    _event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    close(false);
+  const loadScores = async (workId: number) => {
+    setIsLoading(true);
+
+    const response: ScoresSupabaseResponse = await fetchScores(workId);
+    console.log(response);
+    const scores = processScoresResponse(response.data ?? []);
+    setScores(scores);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -88,10 +88,12 @@ const Work = () => {
         <Box sx={{ padding: "1rem" }}>
           <Typography variant="h6" gutterBottom>{`List of scores for "${workTitle}":`}</Typography>
           <Divider sx={{ mb: "1rem" }} />
-          {isLoading ? <CircularProgress /> : <ScoreTabs scores={scores} />}
+          {isLoading
+            ? <CircularProgress />
+            : <ScoreTabs scores={scores} handleOpen={handleOpen} />}
         </Box>
       </Box>
-      
+
       <Footer />
 
       <Snackbar

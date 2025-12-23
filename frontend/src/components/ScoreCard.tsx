@@ -1,10 +1,10 @@
 import { Box, Button, Card, CardContent, Collapse, Typography } from "@mui/material";
-import type { FileInfo, Score } from "../types/api";
 import { useState } from "react";
+import type { FileInfo, Score } from "../types/api";
 
 interface ScoreCardProps {
   score: Score;
-  handleClick: (imslpKey: string, link: string) => Promise<void>;
+  handleOpen: (imslpKey: string, link: string) => Promise<void>;
 }
 
 const cardContentStyles = {
@@ -45,13 +45,13 @@ const detailsStyles = {
   },
 };
 
-const ScoreCard = ({ score, handleClick }: ScoreCardProps) => {
+const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
   const file_info: FileInfo | undefined = score.file_info;
   const source_info: Record<string, any> = score.source_info ?? {};
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
-  const onClick = () => handleClick(String(file_info?.imslp_key), String(file_info?.file_link));
+  const onClick = () => handleOpen(String(file_info?.imslp_key), String(file_info?.file_link));
 
   return (
     <Card variant="outlined" sx={{ mb: 1 }}>
