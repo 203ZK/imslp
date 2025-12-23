@@ -1,6 +1,7 @@
 import { Box, Button, Card, CardContent, Collapse, Typography } from "@mui/material";
 import { useState } from "react";
 import type { FileInfo, Score } from "../types/api";
+import { flagErrorInScore } from "../api/api";
 
 interface ScoreCardProps {
   score: Score;
@@ -16,6 +17,7 @@ const cardContentStyles = {
 
 const boxStyles = {
   display: 'flex',
+  mt: '0.1rem',
 };
 
 const titleStyles = {
@@ -40,6 +42,18 @@ const detailsStyles = {
   cursor: 'pointer',
   color: 'primary.main',
   width: 'fit-content',
+  flexGrow: 0.2,
+  "&:hover": {
+    textDecoration: 'underline',
+  },
+};
+
+const flagStyles = {
+  textAlign: 'right',
+  cursor: 'pointer',
+  color: 'primary.main',
+  width: 'fit-content',
+  flexGrow: 0.8,
   "&:hover": {
     textDecoration: 'underline',
   },
@@ -52,6 +66,8 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
   const onClick = () => handleOpen(String(file_info?.imslp_key), String(file_info?.file_link));
+
+  const onFlag = () => flagErrorInScore(score.work_id ?? 0, score.id ?? 0, "");
 
   return (
     <Card variant="outlined" sx={{ mb: 1 }}>
@@ -84,13 +100,24 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
           })}
         </Collapse>
 
-        <Typography
-          variant="body2"
-          sx={detailsStyles}
-          onClick={() => setShowDetails((v) => !v)}
-        >
-          {showDetails ? "Hide details" : "Show details"}
-        </Typography>
+        <Box sx={boxStyles}>
+          <Typography
+            variant="body2"
+            sx={detailsStyles}
+            onClick={() => setShowDetails((v) => !v)}
+          >
+            {showDetails ? "Hide details" : "Show details"}
+          </Typography>
+
+          <Typography
+            variant="body2"
+            sx={flagStyles}
+            onClick={onFlag}
+          >
+            Spot an error with the details of the score? Flag it here.
+          </Typography>
+
+        </Box>
 
       </CardContent>
     </Card>

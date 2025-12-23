@@ -66,4 +66,19 @@ export async function fetchMirroredLink(imslpKey: string, link: string): Promise
   });
 
   return mirroredLink1.link ? mirroredLink1 : mirroredLink2; // hacky way
-}; 
+};
+
+export async function flagErrorInScore(workId: number, scoreId: number, remarks?: string): Promise<void> {
+  const supabase = workId < WORK_ID_CUTOFF ? supabase1 : supabase2;
+
+  const row = {
+    score_id: scoreId,
+    remarks: remarks,
+  }
+
+  const { error } = await supabase.from("errors").insert(row);
+
+  if (error) {
+    console.error(`Error fetching scores from Supabase: ${error}`);
+  }
+}
