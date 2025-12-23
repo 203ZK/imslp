@@ -45,7 +45,7 @@ const ScoreTabs = ({ scores, handleOpen }: ScoreTabsProps) => {
   };
 
   return (
-    <Box sx={{ wdith: '100%' }}>
+    <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabIndex} onChange={handleChange} aria-label="basic tabs example">
           {Object.keys(scores).map((category: string, i: number) => {

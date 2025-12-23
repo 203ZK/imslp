@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent, Collapse, Typography } from "@mui/material";
 import { useState } from "react";
 import type { FileInfo, Score } from "../types/api";
-import { flagErrorInScore } from "../api/api";
+import DialogBox from "./DialogBox";
 
 interface ScoreCardProps {
   score: Score;
@@ -64,10 +64,14 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
   const source_info: Record<string, any> = score.source_info ?? {};
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  
 
   const onClick = () => handleOpen(String(file_info?.imslp_key), String(file_info?.file_link));
 
-  const onFlag = () => flagErrorInScore(score.work_id ?? 0, score.id ?? 0, "");
+  const onFlag = () => {
+    setDialogOpen(true);
+  }
 
   return (
     <Card variant="outlined" sx={{ mb: 1 }}>
@@ -116,10 +120,17 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
           >
             Spot an error with the details of the score? Flag it here.
           </Typography>
-
         </Box>
-
       </CardContent>
+
+      <DialogBox
+        workId={score.work_id ?? 0}
+        scoreTitle={`${file_info?.file_title} (#${file_info?.imslp_key})`}
+        scoreId={score.id ?? 0}
+        setOpen={setDialogOpen}
+        isOpen={dialogOpen}
+      />
+
     </Card>
   );
 };
