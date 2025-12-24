@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, Collapse, Typography } from "@mui/mater
 import { useState } from "react";
 import type { FileInfo, Score } from "../types/api";
 import DialogBox from "./DialogBox";
+import { INCORRECT_SCORE_DETAILS } from "../constants/values";
 
 interface ScoreCardProps {
   score: Score;
@@ -65,9 +66,10 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  
 
-  const onClick = () => handleOpen(String(file_info?.imslp_key), String(file_info?.file_link));
+  const onClick = () => {
+    handleOpen(String(file_info?.imslp_key), String(file_info?.file_link));
+  };
 
   const onFlag = () => {
     setDialogOpen(true);
@@ -113,19 +115,16 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
             {showDetails ? "Hide details" : "Show details"}
           </Typography>
 
-          <Typography
-            variant="body2"
-            sx={flagStyles}
-            onClick={onFlag}
-          >
+          <Typography variant="body2" sx={flagStyles} onClick={onFlag}>
             Spot an error with the details of the score? Flag it here.
           </Typography>
         </Box>
       </CardContent>
 
       <DialogBox
+        errorTitle={INCORRECT_SCORE_DETAILS}
         workId={score.work_id ?? 0}
-        scoreTitle={`${file_info?.file_title} (#${file_info?.imslp_key})`}
+        title={`${file_info?.file_title} (#${file_info?.imslp_key})`}
         scoreId={score.id ?? 0}
         setOpen={setDialogOpen}
         isOpen={dialogOpen}

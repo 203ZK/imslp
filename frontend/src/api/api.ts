@@ -68,10 +68,11 @@ export async function fetchMirroredLink(imslpKey: string, link: string): Promise
   return mirroredLink1.link ? mirroredLink1 : mirroredLink2; // hacky way
 };
 
-export async function flagErrorInScore(workId: number, scoreId: number, remarks?: string): Promise<void> {
+export async function flagErrorInScore(workId: number, scoreId?: number, remarks?: string): Promise<void> {
   const supabase = workId < WORK_ID_CUTOFF ? supabase1 : supabase2;
 
   const row = {
+    work_id: workId,
     score_id: scoreId,
     remarks: remarks,
   }

@@ -16,6 +16,7 @@ import NavBar from "../components/NavBar";
 import ScoreTabs from "../components/ScoreTabs";
 import { SearchBarAlternative } from "../components/SearchBar";
 import type { ScoresSupabaseResponse } from "../types/api";
+import NoScoresFound from "../components/NoScoresFound";
 
 const boxStyles = {
   flexGrow: 1,
@@ -67,7 +68,6 @@ const Work = () => {
     setIsLoading(true);
 
     const response: ScoresSupabaseResponse = await fetchScores(workId);
-    console.log(response);
     const scores = processScoresResponse(response.data ?? []);
     setScores(scores);
 
@@ -90,7 +90,9 @@ const Work = () => {
           <Divider sx={{ mb: "1rem" }} />
           {isLoading
             ? <CircularProgress />
-            : <ScoreTabs scores={scores} handleOpen={handleOpen} />}
+            : Object.keys(scores).length === 0
+              ? <NoScoresFound workId={Number(workId)} workTitle={workTitle} />
+              : <ScoreTabs scores={scores} handleOpen={handleOpen} />}
         </Box>
       </Box>
 

@@ -1,12 +1,13 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { flagErrorInScore } from "../api/api";
-import { PLACEHOLDER_REMARK } from "../constants/values";
+import { PLACEHOLDER_REMARK, SUCCESS_FLAG_MESSAGE } from "../constants/values";
 
 interface DialogBoxProps {
+  errorTitle: string;
   workId: number;
-  scoreTitle: string;
-  scoreId: number;
+  title: string;
+  scoreId?: number;
   setOpen: (open: boolean) => void;
   isOpen: boolean;
 }
@@ -16,7 +17,7 @@ const buttonStyles = {
   color: 'white',
 };
 
-const DialogBox = ({ workId, scoreTitle, scoreId, setOpen, isOpen }: DialogBoxProps) => {
+const DialogBox = ({ errorTitle, workId, title, scoreId, setOpen, isOpen }: DialogBoxProps) => {
   const [remarks, setRemarks] = useState<string>("");
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
@@ -39,11 +40,11 @@ const DialogBox = ({ workId, scoreTitle, scoreId, setOpen, isOpen }: DialogBoxPr
         onClose={() => setOpen(false)}
         slotProps={{ paper: { sx: { width: '70vw' } } }}
       >
-        <DialogTitle>Flag Error</DialogTitle>
+        <DialogTitle fontWeight="bold">Flaging Error: {errorTitle}</DialogTitle>
 
         <DialogContent>
           <Typography variant="body2" sx={{ mb: 2 }}>
-            Reporting error for: <b>{scoreTitle}</b>
+            Reporting error for: <b>{title}</b>
           </Typography>
 
           <TextField
@@ -66,7 +67,7 @@ const DialogBox = ({ workId, scoreTitle, scoreId, setOpen, isOpen }: DialogBoxPr
         autoHideDuration={6000}
         color="success"
         onClose={() => setSnackbarOpen(false)}
-        message={"Error flagged. Thank you for your feedback!"}
+        message={SUCCESS_FLAG_MESSAGE}
       />
     </>
   );
