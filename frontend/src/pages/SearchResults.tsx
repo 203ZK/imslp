@@ -1,17 +1,17 @@
+import { Box, CircularProgress, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { Work, WorksSupabaseResponse } from "../types/api";
 import { fetchWorks } from "../api/api";
-import { Box, CircularProgress, Divider, Pagination, Stack, Typography } from "@mui/material";
-import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import NoResults from "../components/NoResults";
-import WorkCard from "../components/WorkCard";
+import NavBar from "../components/NavBar";
+import NoWorksFound from "../components/NoWorksFound";
 import { SearchBarAlternative } from "../components/SearchBar";
+import WorkCard from "../components/WorkCard";
+import type { Work, WorksSupabaseResponse } from "../types/api";
 
 const boxStyles = {
   flexGrow: 1,
-  padding: '3rem',
+  padding: '2rem',
   textAlign: 'left',
 };
 
@@ -71,7 +71,7 @@ const SearchResults = () => {
           {isLoading
             ? <CircularProgress />
             : results.length == 0
-              ? <NoResults />
+              ? <NoWorksFound />
               : (
                   <Box display="flex" flexDirection="column" rowGap={1}>
                     {results.map((work: Work, i: number) => {

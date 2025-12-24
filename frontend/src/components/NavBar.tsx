@@ -1,18 +1,21 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 
+const toolbarStyles = {
+  backgroundColor: "#1d4e8eff",
+  justifyContent: "space-between",
+};
+
 const NavBar = () => {
   const navItems = ['Home', 'About', 'Contact'];
 
   return (
-    <Box display="flex">
+    <Box display="flex" width='100%'>
       <AppBar component="nav" position="static">
-        <Toolbar sx={{ backgroundColor: "#1d4e8eff", justifyContent: "space-between" }}>
+        <Toolbar sx={toolbarStyles}>
           <Typography variant="h6">IMSLP Clone</Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#fff' }}>
-                {item}
-              </Button>
+              <Button key={item} sx={{ color: '#fff' }}>{item}</Button>
             ))}
           </Box>
         </Toolbar>

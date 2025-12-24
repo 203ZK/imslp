@@ -9,11 +9,10 @@ interface NoScoresFoundProps {
 }
 
 const flagStyles = {
-  textAlign: 'right',
+  mt: '0.5rem',
   cursor: 'pointer',
   color: 'primary.main',
   width: 'fit-content',
-  flexGrow: 0.8,
   "&:hover": {
     textDecoration: 'underline',
   },

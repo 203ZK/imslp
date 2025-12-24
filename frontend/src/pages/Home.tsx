@@ -13,7 +13,7 @@ const boxStyles = {
 
 const Home = () => {
   return (
-    <Box display="flex" flexDirection="column" minHeight="100vh">
+    <Box display="flex" flexDirection="column" minHeight="100vh" p="0">
       <NavBar />
       <Box display="flex" flexDirection="column" sx={boxStyles}>
         <Typography variant="h4" gutterBottom>

@@ -20,7 +20,7 @@ import NoScoresFound from "../components/NoScoresFound";
 
 const boxStyles = {
   flexGrow: 1,
-  padding: '3rem',
+  padding: '2rem',
   textAlign: 'left',
 };
 

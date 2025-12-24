@@ -10,6 +10,7 @@ interface ScoreArrangementProps {
 
 const titleStyles = {
   fontWeight: 'bold',
+  mt: '1rem',
   mb: '0.7rem',
 };
 

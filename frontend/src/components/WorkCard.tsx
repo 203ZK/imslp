@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import type { Work } from "../types/api";
 import { useNavigate } from "react-router-dom";
+import { Visibility } from "@mui/icons-material";
 
 interface WorkCardProps {
   work: Work
@@ -8,6 +9,7 @@ interface WorkCardProps {
 
 const cardContentStyle = {
   display: 'flex',
+  gap: 2,
   alignItems: 'center',
   padding: '16px',
   "&:last-child": {
@@ -15,11 +17,14 @@ const cardContentStyle = {
   }
 };
 
-const buttonStyle = {
-  backgroundColor: '#0e58b3ff',
-  color: 'white',
-  flexGrow: 0.05,
-  textTransform: 'none'
+const titleStyles = {
+  fontWeight: 'bold',
+  flexGrow: 1,
+  minWidth: 0,
+};
+
+const buttonStyles = {
+  flexShrink: 0,
 };
 
 const WorkCard = ({ work }: WorkCardProps) => {
@@ -45,10 +50,12 @@ const WorkCard = ({ work }: WorkCardProps) => {
   return (
     <Card variant="outlined">
       <CardContent sx={cardContentStyle}>
-        <Typography variant="body1" fontWeight="bold" flexGrow={0.95}>
+        <Typography variant="body1" sx={titleStyles}>
           {work.work_title} ({work.composer})
         </Typography>
-        <Button sx={buttonStyle} onClick={handleClick}>View scores</Button>
+        <Button sx={buttonStyles} onClick={handleClick}>
+          <Visibility />
+        </Button>
       </CardContent>
     </Card>
   );

@@ -25,7 +25,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ pl: 2, pr: 2 }}>{children}</Box>}
+      {value === index && <Box sx={{ pl: 1, pr: 1 }}>{children}</Box>}
     </div>
   );
 }
@@ -47,7 +47,13 @@ const ScoreTabs = ({ scores, handleOpen }: ScoreTabsProps) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tabIndex} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          variant="scrollable"
+          scrollButtons="auto"
+          value={tabIndex}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           {Object.keys(scores).map((category: string, i: number) => {
             return <Tab label={category} {...a11yProps(i)} />
           })}

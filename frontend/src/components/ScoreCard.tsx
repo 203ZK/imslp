@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { FileInfo, Score } from "../types/api";
 import DialogBox from "./DialogBox";
 import { INCORRECT_SCORE_DETAILS } from "../constants/values";
+import { Download } from "@mui/icons-material";
 
 interface ScoreCardProps {
   score: Score;
@@ -18,20 +19,19 @@ const cardContentStyles = {
 
 const boxStyles = {
   display: 'flex',
-  mt: '0.1rem',
+  mt: '0.5rem',
+  textAlign: 'middle',
 };
 
 const titleStyles = {
   fontWeight: 'bold',
-  flexGrow: 0.95,
-  lineHeight: '2rem',
+  flexGrow: 1,
+  minWidth: 0,
 };
 
 const buttonStyles = {
-  backgroundColor: '#0e58b3ff',
-  color: 'white',
-  flexGrow: 0.05,
-  textTransform: 'none',
+  flexShrink: 0,
+  transform: 'translate(10%, -10%)',
 };
 
 const fieldStyles = {
@@ -39,7 +39,7 @@ const fieldStyles = {
 };
 
 const detailsStyles = {
-  lineHeight: '1.8rem',
+  lineHeight: '1.5rem',
   cursor: 'pointer',
   color: 'primary.main',
   width: 'fit-content',
@@ -50,6 +50,7 @@ const detailsStyles = {
 };
 
 const flagStyles = {
+  lineHeight: '1.5rem',
   textAlign: 'right',
   cursor: 'pointer',
   color: 'primary.main',
@@ -84,7 +85,9 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
             {`${file_info?.file_title} (#${file_info?.imslp_key})`}
           </Typography>
           
-          <Button onClick={onClick} sx={buttonStyles}>Open file</Button>
+          <Button onClick={onClick} sx={buttonStyles}>
+            <Download />
+          </Button>
         </Box>
 
         <Typography variant="body2" sx={fieldStyles}>
@@ -116,7 +119,7 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
           </Typography>
 
           <Typography variant="body2" sx={flagStyles} onClick={onFlag}>
-            Spot an error with the details of the score? Flag it here.
+            Spot an error? Flag it here.
           </Typography>
         </Box>
       </CardContent>
