@@ -20,21 +20,45 @@ function extractDetails(score: ScoreApiResponse): Score {
     try {
       fileInfo = JSON.parse(score.file_info);
     } catch (error) {
-      // console.log("File info:", score.file_info);
-      // console.error(`Error parsing file info: ${error}`);
+      console.error(`Error parsing file info: ${error}`);
     }
   }
   if (score.source_info) {
     try {
       sourceInfo = JSON.parse(score.source_info);
     } catch (error) {
-      // console.log("Source info:", score.source_info);
-      // console.error(`Error parsing source info: ${error}`);
+      console.error(`Error parsing source info: ${error}`);
     }
   }
 
   return { ...score, file_info: fileInfo, source_info: sourceInfo };
 };
+
+function comparator(a: Score, b: Score) {
+  const aDownloads = a.file_info?.download_count ?? 0;
+  const bDownloads = b.file_info?.download_count ?? 0;
+  return bDownloads - aDownloads;
+}
+
+function sortScores(categories: Categories): Categories {
+  let category: string;
+  for (category in categories) {
+    const movements = categories[category];
+    let movement: string;
+
+    for (movement in movements) {
+      const arrangements = movements[movement];
+      let arrangement: string;
+
+      for (arrangement in arrangements) {
+        const scores = arrangements[arrangement];
+        arrangements[arrangement] = scores.sort(comparator);
+      }
+    }
+  }
+
+  return categories;
+}
 
 function orderScores(scores: Score[]): Categories {
   const categories: Categories = {};
@@ -57,5 +81,7 @@ function orderScores(scores: Score[]): Categories {
 export function processScoresResponse(scores: ScoreApiResponse[]): Categories {
   const extractedScores: Score[] = scores.map(score => extractDetails(score));
   const orderedScores: Categories = orderScores(extractedScores);
-  return orderedScores;
+  const sortedScores: Categories = sortScores(orderedScores);
+  
+  return sortedScores;
 }

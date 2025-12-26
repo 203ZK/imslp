@@ -95,6 +95,14 @@ const ScoreCard = ({ score, handleOpen }: ScoreCardProps) => {
         </Typography>
 
         <Typography variant="body2" sx={fieldStyles}>
+          <b>Page count</b>{`: ${file_info?.page_count}`}
+        </Typography>
+
+        <Typography variant="body2" sx={fieldStyles}>
+          <b>Download count</b>{`: ${file_info?.download_count}`}
+        </Typography>
+
+        <Typography variant="body2" sx={fieldStyles}>
           <b>Uploaded by</b>{`: ${file_info?.uploader}`}
         </Typography>
 
