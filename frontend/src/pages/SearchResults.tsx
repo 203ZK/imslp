@@ -15,6 +15,12 @@ const boxStyles = {
   textAlign: 'left',
 };
 
+const resultsStyles = {
+  mb: '0.8rem',
+  color: 'gray',
+  fontStyle: 'italic',
+};
+
 const SearchResults = () => {
   const [params] = useSearchParams();
   const title = params.get("title") ?? "";
@@ -59,6 +65,9 @@ const SearchResults = () => {
                          : ` (${count} matches)`;
   const matchesText = baseText + numOfMatchesText;
 
+  const resultsStart = Math.min((currentPage - 1) * MAX_PAGE_SIZE + 1, count);
+  const resultsEnd = Math.min(currentPage * MAX_PAGE_SIZE, count);
+
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <NavBar />
@@ -68,6 +77,11 @@ const SearchResults = () => {
         <Box sx={{ padding: "1rem" }}>
           <Typography variant="h6" gutterBottom>{matchesText}</Typography>
           <Divider sx={{ mb: "1rem" }} />
+
+          <Typography variant="body2" sx={resultsStyles}>
+            Showing results {resultsStart} - {resultsEnd} of {count}
+          </Typography>
+
           {isLoading
             ? <CircularProgress />
             : results.length == 0
