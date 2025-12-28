@@ -1,6 +1,5 @@
 from supabase import AsyncClient
 from typing import List
-import pprint
 
 from logger import createLogger
 from constants import HORIZONTAL_BAR

@@ -20,7 +20,7 @@ def fetchWorkPage(session: HTMLSession, link: str) -> Response:
 def parseTabsFromPage(response: Response) -> List[Tag]:
     """Return all tab objects in the page."""
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(response.text, "lxml")
     score_section = soup.find("div", {"id": "wpscore_tabs"})
     tabs = score_section.find_all("div", {"class": "jq-ui-tabs"})
     return tabs
@@ -42,7 +42,7 @@ def extractSourceInfo(collection: Tag) -> Dict:
         
         if header_text != "Purchase":
             source_info[header_text] = data_text
-    
+
     return source_info
 
 
@@ -70,7 +70,8 @@ def extractFileInfo(file: Tag) -> FileInfo:
         download_count: int = int(span_download.find("a").get_text(strip=True)) if span_download else ""
 
         span_user = file_details.find("span", {"class": "ms555"})
-        uploader: str = span_user.find("a").get_text(strip=True) if span_user else ""
+        # uploader: str = span_user.find("a").get_text(strip=True) if span_user else ""
+        uploader: str = span_user.get_text(strip=True) if span_user else ""
 
         return FileInfo(imslp_key, file_title, file_size, page_count, download_count, file_link, uploader)
 
